@@ -1,42 +1,61 @@
-FROM php:7.0-fpm
-MAINTAINER Kristoph Junge <kristoph.junge@gmail.com>
+FROM php:7.3-fpm
 
 # Change UID and GID of www-data user to match host privileges
 RUN usermod -u 999 www-data && \
     groupmod -g 999 www-data
 
 # Utilities
-RUN apt-get update && \
-    apt-get -y install apt-transport-https ca-certificates git curl --no-install-recommends && \
+RUN set -eux; \
+    \
+    apt-get update; \ 
+    apt-get install -y --no-install-recommends \
+    git curl librsvg2-bin imagemagick python3 apt-transport-https ca-certificates \
+    libicu-dev g++; \
     rm -r /var/lib/apt/lists/*
+
+# Install the PHP extentions we need
+RUN set -eux; \
+    \
+    savedAptMark="$(apt-mark showmanual)"; \
+    \
+    apt-get update; \
+    apt-get install -y --no-install-recommends libicu-dev; \
+    docker-php-ext-install -j $(nproc) intl mbstring mysqli opcache; \
+    pecl install APCu-5.1.18; \
+    docker-php-ext-enable apcu; \
+    \
+    apt-mark auto '.*' > /dev/null; \
+    apt-mark manual $savedAptMark; \
+    ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
+        | awk '/=>/ { print $3 }' \
+        | sort -u \
+        | xargs -r dpkg-query -S \
+        | cut -d: -f1 \
+        | sort -u \
+        | xargs -rt apt-mark manual; \
+    \
+    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+    rm -rf /var/lib/apt/lists/*
+
+# set recommended PHP.ini settings
+# see https://secure.php.net/manual/en/opcache.installation.php
+RUN { \
+		echo 'opcache.memory_consumption=128'; \
+		echo 'opcache.interned_strings_buffer=8'; \
+		echo 'opcache.max_accelerated_files=4000'; \
+		echo 'opcache.revalidate_freq=60'; \
+		echo 'opcache.fast_shutdown=1'; \
+	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
 # MySQL PHP extension
 RUN docker-php-ext-install mysqli
 
-# Pear mail
-RUN curl -s -o /tmp/go-pear.phar http://pear.php.net/go-pear.phar && \
-    echo '/usr/bin/php /tmp/go-pear.phar "$@"' > /usr/bin/pear && \
-    chmod +x /usr/bin/pear && \
-    pear install mail Net_SMTP
-
 # Imagick with PHP extension
-RUN apt-get update && apt-get install -y imagemagick libmagickwand-6.q16-dev --no-install-recommends && \
-    ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin/ && \
-    pecl install imagick-3.4.0RC6 && \
-    echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini && \
-    rm -rf /var/lib/apt/lists/*
-
-# Intl PHP extension
-RUN apt-get update && apt-get install -y libicu-dev g++ --no-install-recommends && \
-    docker-php-ext-install intl && \
-    apt-get install -y --auto-remove libicu52 g++ && \
-    rm -rf /var/lib/apt/lists/*
-
-# APC PHP extension
-RUN pecl install apcu && \
-    pecl install apcu_bc-1.0.3 && \
-    docker-php-ext-enable apcu --ini-name 10-docker-php-ext-apcu.ini && \
-    docker-php-ext-enable apc --ini-name 20-docker-php-ext-apc.ini
+#RUN apt-get update && apt-get install -y imagemagick libmagickwand-6.q16-dev --no-install-recommends && \
+#    ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin/ && \
+#    pecl install imagick-3.4.0RC6 && \
+#    echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini && \
+#    rm -rf /var/lib/apt/lists/*
 
 # Nginx
 RUN apt-get update && \
@@ -45,7 +64,7 @@ RUN apt-get update && \
 COPY config/nginx/* /etc/nginx/
 
 # PHP-FPM
-COPY config/php-fpm/php-fpm.conf /usr/local/etc/
+COPY config/php-fpm/php-fpm.conf /usr/local/etc/ 
 COPY config/php-fpm/php.ini /usr/local/etc/php/
 RUN mkdir -p /var/run/php7-fpm/ && \
     chown www-data:www-data /var/run/php7-fpm/
@@ -58,13 +77,16 @@ COPY config/supervisor/supervisord.conf /etc/supervisor/conf.d/
 COPY config/supervisor/kill_supervisor.py /usr/bin/
 
 # NodeJS
-RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - && \
-    apt-get install -y nodejs --no-install-recommends
+RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt-get install -y nodejs
 
 # Parsoid
-RUN useradd parsoid --no-create-home --home-dir /usr/lib/parsoid --shell /usr/sbin/nologin
-RUN apt-key advanced --keyserver pgp.mit.edu --recv-keys 90E9F83F22250DD7 && \
-    echo "deb https://releases.wikimedia.org/debian jessie-mediawiki main" > /etc/apt/sources.list.d/parsoid.list && \
+RUN useradd parsoid --no-create-home --home-dir /usr/lib/parsoid --shell /usr/sbin/nologin; \
+    apt-get update && \
+    apt-get -y install dirmngr --no-install-recommends; \
+    apt-key advanced --keyserver keys.gnupg.net --recv-keys AF380A3036A03444 && \
+    echo "deb https://releases.wikimedia.org/debian jessie-mediawiki main" | tee /etc/apt/sources.list.d/parsoid.list && \
+    apt-get -y install apt-transport-https; \
     apt-get update && \
     apt-get -y install parsoid --no-install-recommends
 COPY config/parsoid/config.yaml /usr/lib/parsoid/src/config.yaml
@@ -72,8 +94,8 @@ ENV NODE_PATH /usr/lib/parsoid/node_modules:/usr/lib/parsoid/src
 
 # MediaWiki
 ARG MEDIAWIKI_VERSION_MAJOR=1
-ARG MEDIAWIKI_VERSION_MINOR=30
-ARG MEDIAWIKI_VERSION_BUGFIX=0
+ARG MEDIAWIKI_VERSION_MINOR=34
+ARG MEDIAWIKI_VERSION_BUGFIX=2
 
 RUN curl -s -o /tmp/keys.txt https://www.mediawiki.org/keys/keys.txt && \
     curl -s -o /tmp/mediawiki.tar.gz https://releases.wikimedia.org/mediawiki/$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR/mediawiki-$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR.$MEDIAWIKI_VERSION_BUGFIX.tar.gz && \
