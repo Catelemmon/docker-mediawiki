@@ -2,3 +2,4 @@ testdata/
 docker-compose.yml
 README.md
 .env
+mediawiki_mysql/

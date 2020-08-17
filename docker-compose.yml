@@ -8,7 +8,7 @@ services:
     environment:
       MEDIAWIKI_SERVER: http://localhost:8080
       MEDIAWIKI_SITENAME: MyWiki
-      MEDIAWIKI_LANGUAGE_CODE: en
+      MEDIAWIKI_LANGUAGE_CODE: zh
       MEDIAWIKI_SECRET_KEY: ${SECRET_KEY}
       #MEDIAWIKI_META_NAMESPACE: MyNamespace
       MEDIAWIKI_DB_TYPE: mysql
@@ -20,9 +20,9 @@ services:
       MEDIAWIKI_DB_TABLE_OPTIONS: ENGINE=InnoDB, DEFAULT CHARSET=binary
       MEDIAWIKI_DB_PASSWORD: ${DB_PASSWORD}
       MEDIAWIKI_ENABLE_UPLOADS: 1
-      MEDIAWIKI_MAX_UPLOAD_SIZE: 10M
-      MEDIAWIKI_DEFAULT_SKIN: vector
-      MEDIAWIKI_SMTP: 1
+      MEDIAWIKI_MAX_UPLOAD_SIZE: 2048M
+      MEDIAWIKI_DEFAULT_SKIN: Vector
+      MEDIAWIKI_SMTP: 0
       MEDIAWIKI_SMTP_SSL_VERIFY_PEER: 0
       MEDIAWIKI_SMTP_HOST: ${SMTP_HOST}
       MEDIAWIKI_SMTP_IDHOST: ${SMTP_IDHOST}
@@ -42,12 +42,13 @@ services:
       PARSOID_WORKERS: 1
     ports:
     - 127.0.0.1:8080:8080
+    - 127.0.0.1:9001:9001
     depends_on:
     - mediawiki_mysql
     volumes:
     - mediawiki_images:/images
     - ./testdata/logo.png:/var/www/mediawiki/resources/assets/wiki.png:ro
-    - ./testdata/ExtraLocalSettings.php:/var/www/mediawiki/ExtraLocalSettings.php:ro
+#    - ./testdata/ExtraLocalSettings.php:/var/www/mediawiki/ExtraLocalSettings.php
   mediawiki_mysql:
     image: mysql:5.7
     container_name: mediawiki_mysql
