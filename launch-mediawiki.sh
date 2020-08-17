@@ -1,0 +1,15 @@
+docker run --name mediawiki_wiki \
+  --link mediawiki_mariadb:db \
+  -p 8080:8080 \
+  -e MEDIAWIKI_SERVER=http://localhost:8080 \
+  -e MEDIAWIKI_SITENAME=MyWiki \
+  -e MEDIAWIKI_LANGUAGE_CODE=zh \
+  -e MEDIAWIKI_DB_TYPE=mysql \
+  -e MEDIAWIKI_DB_HOST=db \
+  -e MEDIAWIKI_DB_PORT=3306 \
+  -e MEDIAWIKI_DB_NAME=wikidb \
+  -e MEDIAWIKI_DB_USER=wikiuser \
+  -e MEDIAWIKI_DB_PASSWORD=${DB_PASSWORD} \
+  -e MEDIAWIKI_ENABLE_UPLOADS=1 \
+  -v mediawiki_images:/images \
+  -d mediawiki_wiki:v1
