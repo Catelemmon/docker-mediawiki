@@ -50,13 +50,6 @@ RUN { \
 # MySQL PHP extension
 RUN docker-php-ext-install mysqli
 
-# Imagick with PHP extension
-#RUN apt-get update && apt-get install -y imagemagick libmagickwand-6.q16-dev --no-install-recommends && \
-#    ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin/ && \
-#    pecl install imagick-3.4.0RC6 && \
-#    echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini && \
-#    rm -rf /var/lib/apt/lists/*
-
 # Nginx
 RUN apt-get update && \
     apt-get -y install nginx && \
