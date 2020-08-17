@@ -1,0 +1,14 @@
+name: automate build mediawiki
+on:
+  push:
+    tags:
+      - v1
+      - v1.*
+jobs:
+  builds:
+    runs-on: ubuntu-18.04
+
+    steps:
+    -name: build mediawiki docker image
+      run: docker build --tag mediawiki_wiki:${GITHUB_REF##*/}
+
