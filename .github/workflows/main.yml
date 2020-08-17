@@ -10,5 +10,5 @@ jobs:
 
     steps:
     -name: build mediawiki docker image
-      run: docker build --tag mediawiki_wiki:${GITHUB_REF##*/}
+      run: docker build --tag mediawiki_wiki:${{ steps.create_release.outputs.tag }}
 
