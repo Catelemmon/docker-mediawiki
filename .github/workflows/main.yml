@@ -9,6 +9,6 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-    -name: build mediawiki docker image
+    - name: build mediawiki docker image
       run: docker build --tag mediawiki_wiki:${{ steps.create_release.outputs.tag }}
 
