@@ -16,10 +16,10 @@ if (getenv('MEDIAWIKI_META_NAMESPACE') != '') {
 }
 
 # Short URLs
-$wgScriptPath = "";
-$wgArticlePath = "/$1";
-$wgUsePathInfo = true;
-$wgScriptExtension = ".php";
+$wgScriptPath = "/mediawiki";
+//$wgArticlePath = "/$1";
+//$wgUsePathInfo = true;
+//$wgScriptExtension = ".php";
 
 if (getenv('MEDIAWIKI_SERVER') == '') {
     throw new Exception('Missing environment variable MEDIAWIKI_SERVER');
@@ -39,9 +39,9 @@ if (getenv('MEDIAWIKI_PASSWORD_SENDER') != '') {
     $wgPasswordSender = getenv('MEDIAWIKI_PASSWORD_SENDER');
 }
 
-if (getenv('MEDIAWIKI_DB_TYPE') != '') {
-    $wgDBtype = getenv('MEDIAWIKI_DB_TYPE');
-}
+$wgDBtype = "mysql";
+$wgDBserver = "localhost";
+$wgDBprefix = "";
 
 if (getenv('MEDIAWIKI_DB_HOST') != '' || getenv('MEDIAWIKI_DB_PORT') != '') {
     $hostname = ((getenv('MEDIAWIKI_DB_HOST') != '') ? getenv('MEDIAWIKI_DB_HOST') : '127.0.0.1');
@@ -63,44 +63,16 @@ if (getenv('MEDIAWIKI_DB_PASSWORD') != '') {
     $wgDBpassword = getenv('MEDIAWIKI_DB_PASSWORD');
 }
 
-# MySQL specific settings
-if (getenv('MEDIAWIKI_DB_TYPE') == 'mysql') {
-    // Cache sessions in database
-    $wgSessionCacheType = CACHE_DB;
+$wgEnableUploads = true;
 
-    if (getenv('MEDIAWIKI_DB_PREFIX') != '') {
-        $wgDBprefix = getenv('MEDIAWIKI_DB_PREFIX');
-    }
-
-    if (getenv('MEDIAWIKI_DB_TABLE_OPTIONS') != '') {
-        $wgDBTableOptions = getenv('MEDIAWIKI_DB_TABLE_OPTIONS');
-    }
-}
-
-$wgDBmysql5 = false;
-
-# SQLite specific settings
-$wgSQLiteDataDir = '/data';
-
-if (getenv('MEDIAWIKI_DB_TYPE') == 'sqlite') {
-    $wgObjectCaches[CACHE_DB] = [
-        'class' => 'SqlBagOStuff',
-        'loggroup' => 'SQLBagOStuff',
-        'server' => [
-            'type' => 'sqlite',
-            'dbname' => 'wikicache',
-            'tablePrefix' => '',
-            'flags' => 0
-        ]
-    ];
-}
-
-$wgMainCacheType = CACHE_ACCEL;
-$wgMemCachedServers = [];
 
 $wgUploadPath = '/images';
 $wgUploadDirectory = '/images';
+
 $wgUploadSizeWarning = false;
+
+$wgEnableUploads = true;
+
 
 if (getenv('MEDIAWIKI_MAX_UPLOAD_SIZE') != '') {
     // Since MediaWiki's config takes upload size in bytes and PHP in 100M format, lets use PHPs format and convert that here.
@@ -128,11 +100,6 @@ if (getenv('MEDIAWIKI_MAX_UPLOAD_SIZE') != '') {
     }
 }
 
-$wgEnableUploads = false;
-if (getenv('MEDIAWIKI_ENABLE_UPLOADS') == '1') {
-    $wgEnableUploads = true;
-}
-
 if (getenv('MEDIAWIKI_FILE_EXTENSIONS') != '') {
     foreach (explode(',', getenv('MEDIAWIKI_FILE_EXTENSIONS')) as $extension) {
         $wgFileExtensions[] = trim($extension);
@@ -155,7 +122,17 @@ if (getenv('MEDIAWIKI_UPGRADE_KEY') != '') {
     $wgUpgradeKey = getenv('MEDIAWIKI_UPGRADE_KEY');
 }
 
+$wgRightsPage = "";
+$wgRightsUrl = "";
+$wgRightsText = "";
+$wgRightsIcon = "";
+
 $wgDiff3 = "/usr/bin/diff3";
+
+
+$wgGroupPermissions['*']['createaccount'] = false;
+$wgGroupPermissions['*']['edit'] = false;
+$wgGroupPermissions['*']['read'] = false;
 
 $wgDefaultSkin = "vector";
 if (getenv('MEDIAWIKI_DEFAULT_SKIN') != '') {
@@ -163,9 +140,8 @@ if (getenv('MEDIAWIKI_DEFAULT_SKIN') != '') {
 }
 
 # Enabled skins
-wfLoadSkin( 'CologneBlue' );
-wfLoadSkin( 'Modern' );
 wfLoadSkin( 'MonoBook' );
+wfLoadSkin( 'Timeless' );
 wfLoadSkin( 'Vector' );
 
 # Debug
@@ -176,42 +152,64 @@ if (getenv('MEDIAWIKI_DEBUG') == '1') {
     $wgDebugLogFile = "/tmp/wiki-debug.log";
 }
 
-# SMTP E-Mail
-if (getenv('MEDIAWIKI_SMTP') == '1') {
-    $wgEnableEmail = true;
-    $wgEnableUserEmail = true;
-    $wgSMTP = array(
-        'host'     => getenv('MEDIAWIKI_SMTP_HOST'), // could also be an IP address. Where the SMTP server is located
-        'IDHost'   => getenv('MEDIAWIKI_SMTP_IDHOST'), // Generally this will be the domain name of your website (aka mywiki.org)
-        'port'     => getenv('MEDIAWIKI_SMTP_PORT'), // Port to use when connecting to the SMTP server
-        'auth'     => (getenv('MEDIAWIKI_SMTP_AUTH') == '1'), // Should we use SMTP authentication (true or false)
-        'username' => getenv('MEDIAWIKI_SMTP_USERNAME'), // Username to use for SMTP authentication (if being used)
-        'password' => getenv('MEDIAWIKI_SMTP_PASSWORD') // Password to use for SMTP authentication (if being used)
-    );
-}
+wfLoadExtension( 'CategoryTree' );
+wfLoadExtension( 'Cite' );
+wfLoadExtension( 'CiteThisPage' );
+wfLoadExtension( 'CodeEditor' );
+wfLoadExtension( 'ConfirmEdit' );
+wfLoadExtension( 'ImageMap' );
+wfLoadExtension( 'InputBox' );
+wfLoadExtension( 'Interwiki' );
+wfLoadExtension( 'LocalisationUpdate' );
+wfLoadExtension( 'MultimediaViewer' );
+wfLoadExtension( 'Nuke' );
+wfLoadExtension( 'OATHAuth' );
+wfLoadExtension( 'PageImages' );
+wfLoadExtension( 'ParserFunctions' );
+wfLoadExtension( 'PdfHandler' );
+wfLoadExtension( 'Poem' );
+wfLoadExtension( 'Renameuser' );
+wfLoadExtension( 'ReplaceText' );
+wfLoadExtension( 'Scribunto' );
+wfLoadExtension( 'SpamBlacklist' );
+wfLoadExtension( 'SyntaxHighlight_GeSHi' );
+wfLoadExtension( 'TextExtracts' );
+wfLoadExtension( 'WikiEditor' );
+
 
 # VisualEditor
-if (getenv('MEDIAWIKI_EXTENSION_VISUAL_EDITOR_ENABLED') == ''
-|| getenv('MEDIAWIKI_EXTENSION_VISUAL_EDITOR_ENABLED') == '1') {
-    wfLoadExtension('VisualEditor');
-    $wgDefaultUserOptions['visualeditor-enable'] = 1;
-    $wgVirtualRestConfig['modules']['parsoid'] = array(
-        'url' => 'http://localhost:8142',
-        'domain' => 'localhost',
-        'prefix' => ''
-    );
-    $wgSessionsInObjectCache = true;
-    $wgVirtualRestConfig['modules']['parsoid']['forwardCookies'] = true;
-}
+wfLoadExtension( 'VisualEditor' );
+$wgDefaultUserOptions['visualeditor-enable'] = 1;
+$wgHiddenPrefs[] = 'visualeditor-enable';
+$wgVisualEditorAllowLossySwitching=false;
+
+# parsoid
+$wgVirtualRestConfig['modules']['parsoid'] = array(
+    // URL to the Parsoid instance
+    // Use port 8142 if you use the Debian package
+    'url' => 'http://localhost:8142',
+    // Parsoid "domain", see below (optional)
+    'domain' => 'localhost',
+    // Parsoid "prefix", see below (optional)
+    'prefix' => 'localhost'
+);
+
 
 # User Merge
-if (getenv('MEDIAWIKI_EXTENSION_USER_MERGE_ENABLED') == ''
-|| getenv('MEDIAWIKI_EXTENSION_USER_MERGE_ENABLED') == '1') {
-    wfLoadExtension('UserMerge');
-    $wgGroupPermissions['bureaucrat']['usermerge'] = true;
-    $wgGroupPermissions['sysop']['usermerge'] = true;
-    $wgUserMergeProtectedGroups = array();
-}
+wfLoadExtension('UserMerge');
+$wgGroupPermissions['bureaucrat']['usermerge'] = true;
+$wgGroupPermissions['sysop']['usermerge'] = true;
+$wgUserMergeProtectedGroups = array();
+
+# math extension
+wfLoadExtension( 'Math' );
+$wgDebugLogGroups['Math'] = [ 'level' => 'info', 'destination' => '/var/www/html/mediawiki/log/math.log' ];
+$wgMathValidModes[] = 'mathml';
+$wgDefaultUserOptions['math'] = 'mathml';
+$wgMathoidCli = ['/usr/local/lib/mathoid/cli.js', '-c', '/usr/lib/mathoid/config.yaml'];
+$wgMathMathMLUrl = 'http://localhost:10044/';
+$wgMaxShellMemory = 1228800;
+
 
 # Load extra settings
 require 'ExtraLocalSettings.php';
