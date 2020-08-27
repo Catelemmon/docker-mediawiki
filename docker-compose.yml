@@ -3,64 +3,49 @@
 version: '3'
 services:
   mediawiki_wiki:
-    build: .
+    image: mediawiki_wiki:v1.5
     container_name: mediawiki_wiki
     environment:
-      MEDIAWIKI_SERVER: http://localhost:8080
       MEDIAWIKI_SITENAME: MyWiki
-      MEDIAWIKI_LANGUAGE_CODE: zh
-      MEDIAWIKI_SECRET_KEY: ${SECRET_KEY}
-      #MEDIAWIKI_META_NAMESPACE: MyNamespace
-      MEDIAWIKI_DB_TYPE: mysql
-      MEDIAWIKI_DB_HOST: mediawiki_mysql
-      MEDIAWIKI_DB_PORT: 3306
-      MEDIAWIKI_DB_NAME: wikidb
-      MEDIAWIKI_DB_USER: wikiuser
-      MEDIAWIKI_DB_PREFIX: mywiki_
-      MEDIAWIKI_DB_TABLE_OPTIONS: ENGINE=InnoDB, DEFAULT CHARSET=binary
-      MEDIAWIKI_DB_PASSWORD: ${DB_PASSWORD}
-      MEDIAWIKI_ENABLE_UPLOADS: 1
-      MEDIAWIKI_MAX_UPLOAD_SIZE: 2048M
-      MEDIAWIKI_DEFAULT_SKIN: Vector
-      MEDIAWIKI_SMTP: 0
-      MEDIAWIKI_SMTP_SSL_VERIFY_PEER: 0
-      MEDIAWIKI_SMTP_HOST: ${SMTP_HOST}
-      MEDIAWIKI_SMTP_IDHOST: ${SMTP_IDHOST}
-      MEDIAWIKI_SMTP_PORT: 587
-      MEDIAWIKI_SMTP_AUTH: 1
-      MEDIAWIKI_SMTP_USERNAME: ${SMTP_USERNAME}
-      MEDIAWIKI_SMTP_PASSWORD: ${SMTP_PASSWORD}
+      MEDIAWIKI_META_NAMESPACE: MyWiki
+      MEDIAWIKI_SERVER: http://localhost:8080
       MEDIAWIKI_EMERGENCY_CONTACT: ${EMERGENCY_CONTACT}
       MEDIAWIKI_PASSWORD_SENDER: ${PASSWORD_SENDER}
-      MEDIAWIKI_EXTENSION_VISUAL_EDITOR_ENABLED: 1
-      MEDIAWIKI_EXTENSION_USER_MERGE_ENABLED: 1
+      MEDIAWIKI_DB_NAME: ${DB_NAME}
+      MEDIAWIKI_DB_USER: ${DB_USER}
+      MEDIAWIKI_DB_PASSWORD: ${DB_PASSWORD}
+      MEDIAWIKI_LANGUAGE_CODE: zh-cn
+      MEDIAWIKI_SECRET_KEY: ${SECRET_KEY}
+      MEDIAWIKI_DB_PREFIX: ""
+      MEDIAWIKI_UPGRADE_KEY: ${UPGRADE_KEY}
+      MEDIAWIKI_DB_HOST: mediawiki_mariadb
+      MEDIAWIKI_DEFAULT_SKIN: Vector
       MEDIAWIKI_FILE_EXTENSIONS: png,gif,jpg,jpeg,webp,pdf
       MEDIAWIKI_DEBUG: 1
-      PHPFPM_WORKERS_START: 1
+      PHPFPM_WORKERS_START: 10
       PHPFPM_WORKERS_MIN: 1
       PHPFPM_WORKERS_MAX: 20
-      PARSOID_WORKERS: 1
+      PARSOID_WORKERS: 10
     ports:
-    - 127.0.0.1:8080:8080
-    - 127.0.0.1:9001:9001
+    - 8080:8080
+    - 9002:9001
     depends_on:
-    - mediawiki_mysql
+    - mediawiki_mariadb
     volumes:
     - mediawiki_images:/images
     - ./testdata/logo.png:/var/www/mediawiki/resources/assets/wiki.png:ro
 #    - ./testdata/ExtraLocalSettings.php:/var/www/mediawiki/ExtraLocalSettings.php
-  mediawiki_mysql:
-    image: mysql:5.7
-    container_name: mediawiki_mysql
+    - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+  mediawiki_mariadb:
+    image: mariadb:latest
+    container_name: mediawiki_mariadb
     environment:
-      MYSQL_DATABASE: wikidb
-      MYSQL_USER: wikiuser
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-    ports:
-    - 127.0.0.1:3306:3306
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     volumes:
-    - mediawiki_mysql:/var/lib/mysql
+      - $PWD/mediawiki_mysql:/var/lib/mysql
 volumes:
   mediawiki_images:
   mediawiki_mysql:
