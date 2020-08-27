@@ -65,14 +65,12 @@ if (getenv('MEDIAWIKI_DB_PASSWORD') != '') {
 
 $wgEnableUploads = true;
 
-
 $wgUploadPath = '/images';
 $wgUploadDirectory = '/images';
 
 $wgUploadSizeWarning = false;
 
 $wgEnableUploads = true;
-
 
 if (getenv('MEDIAWIKI_MAX_UPLOAD_SIZE') != '') {
     // Since MediaWiki's config takes upload size in bytes and PHP in 100M format, lets use PHPs format and convert that here.
