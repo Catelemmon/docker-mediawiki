@@ -115,6 +115,27 @@ RUN curl -s -o /tmp/extension-usermerge.tar.gz https://extdist.wmflabs.org/dist/
     tar -xzf /tmp/extension-usermerge.tar.gz -C /var/www/mediawiki/extensions && \
     rm /tmp/extension-usermerge.tar.gz
 
+# CologneBlue Skins
+RUN curl -s -o /tmp/CologneBlue.tar.gz https://extdist.wmflabs.org/dist/skins/CologneBlue-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/skins/ | grep -o -P "(?<=CologneBlue-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head  -1`.tar.gz && \
+    tar -zxf /tmp/CologneBlue.tar.gz -C /var/www/mediawiki/skins && \
+    rm /tmp/CologneBlue.tar.gz
+
+# Use Modern skins
+RUN curl -s -o /tmp/Modern.tar.gz https://extdist.wmflabs.org/dist/skins/Modern-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/skins/ | grep -o -P "(?<=Modern-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head  -1`.tar.gz && \
+    tar -zxf /tmp/Modern.tar.gz -C /var/www/mediawiki/skins && \
+    rm /tmp/Modern.tar.gz
+
+# mathoid
+RUN useradd mathoid --no-create-home --home-dir /usr/lib/mathoid --shell /usr/sbin/nologin; \
+    git clone https://github.com/wikimedia/mathoid/ /usr/lib/mathoid && \
+    cd /usr/lib/mathoid &&  npm install
+COPY config/mathoid/config.yaml /usr/lib/mathoid/config.yaml
+
+# math extension
+RUN curl -s -o /tmp/Math.tar.gz https://extdist.wmflabs.org/dist/extensions/Math-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/extensions/ | grep -o -P "(?<=Math-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head -1`.tar.gz && \
+    tar -xzf /tmp/Math.tar.gz -C /var/www/mediawiki/extensions && \
+    rm /tmp/Math.tar.gz
+
 # Set work dir
 WORKDIR /var/www/mediawiki
 
