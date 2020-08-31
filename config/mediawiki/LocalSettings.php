@@ -16,10 +16,10 @@ if (getenv('MEDIAWIKI_META_NAMESPACE') != '') {
 }
 
 # Short URLs
-$wgScriptPath = "/mediawiki";
-//$wgArticlePath = "/$1";
-//$wgUsePathInfo = true;
-//$wgScriptExtension = ".php";
+$wgScriptPath = "";
+$wgArticlePath = "/wiki/$1";
+$wgUsePathInfo = true;
+$wgScriptExtension = ".php";
 
 if (getenv('MEDIAWIKI_SERVER') == '') {
     throw new Exception('Missing environment variable MEDIAWIKI_SERVER');
