@@ -70,7 +70,7 @@ COPY config/supervisor/supervisord.conf /etc/supervisor/conf.d/
 COPY config/supervisor/kill_supervisor.py /usr/bin/
 
 # NodeJS
-RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash - && \
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
     apt-get install -y nodejs
 
 # Parsoid
@@ -126,7 +126,8 @@ RUN curl -s -o /tmp/Modern.tar.gz https://extdist.wmflabs.org/dist/skins/Modern-
     rm /tmp/Modern.tar.gz
 
 # mathoid
-RUN useradd mathoid --no-create-home --home-dir /usr/lib/mathoid --shell /usr/sbin/nologin; \
+RUN useradd --home=/var/lib/mathoid -M --user-group --system --shell=/usr/sbin/nologin -c "Mathoid for MediaWiki" mathoid; \
+    apt update && apt install librsvg2-dev; \
     git clone https://github.com/wikimedia/mathoid/ /usr/lib/mathoid && \
     cd /usr/lib/mathoid &&  npm install
 COPY config/mathoid/config.yaml /usr/lib/mathoid/config.yaml
@@ -149,5 +150,6 @@ COPY script/* /script/
 # General setup
 VOLUME ["/var/cache/nginx", "/data", "/images"]
 EXPOSE 8080
+EXPOSE 9001
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD []
