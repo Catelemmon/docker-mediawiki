@@ -204,7 +204,7 @@ wfLoadExtension( 'Math' );
 $wgDebugLogGroups['Math'] = [ 'level' => 'info', 'destination' => '/var/www/html/mediawiki/log/math.log' ];
 $wgMathValidModes[] = 'mathml';
 $wgDefaultUserOptions['math'] = 'mathml';
-$wgMathoidCli = ['/usr/local/lib/mathoid/cli.js', '-c', '/usr/lib/mathoid/config.yaml'];
+$wgMathoidCli = ['/usr/lib/mathoid/cli.js', '-c', '/usr/lib/mathoid/config.yaml'];
 $wgMathMathMLUrl = 'http://localhost:10044/';
 $wgMaxShellMemory = 1228800;
 
