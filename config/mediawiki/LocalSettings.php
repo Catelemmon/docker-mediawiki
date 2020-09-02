@@ -129,8 +129,8 @@ $wgDiff3 = "/usr/bin/diff3";
 
 
 $wgGroupPermissions['*']['createaccount'] = false;
-$wgGroupPermissions['*']['edit'] = false;
-$wgGroupPermissions['*']['read'] = false;
+$wgGroupPermissions['*']['edit'] = true;
+$wgGroupPermissions['*']['read'] = true;
 
 $wgDefaultSkin = "vector";
 if (getenv('MEDIAWIKI_DEFAULT_SKIN') != '') {
@@ -182,6 +182,7 @@ $wgHiddenPrefs[] = 'visualeditor-enable';
 $wgVisualEditorAllowLossySwitching=false;
 
 # parsoid
+$wgVirtualRestConfig['modules']['parsoid']['forwardCookies'] = true;
 $wgVirtualRestConfig['modules']['parsoid'] = array(
     // URL to the Parsoid instance
     // Use port 8142 if you use the Debian package
