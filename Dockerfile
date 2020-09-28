@@ -60,7 +60,9 @@ COPY config/nginx/* /etc/nginx/
 COPY config/php-fpm/php-fpm.conf /usr/local/etc/ 
 COPY config/php-fpm/php.ini /usr/local/etc/php/
 RUN mkdir -p /var/run/php7-fpm/ && \
-    chown www-data:www-data /var/run/php7-fpm/
+    mkdir -p /var/log/php-fpm/ && \
+    chown www-data:www-data /var/run/php7-fpm/ && \
+    chown www-data:www-data /var/log/php-fpm/
 
 # Supervisor
 RUN apt-get update && \
@@ -127,9 +129,10 @@ RUN curl -s -o /tmp/Modern.tar.gz https://extdist.wmflabs.org/dist/skins/Modern-
 
 # mathoid
 RUN useradd --home=/var/lib/mathoid -M --user-group --system --shell=/usr/sbin/nologin -c "Mathoid for MediaWiki" mathoid; \
-    apt update && apt install librsvg2-dev; \
+    apt update && apt install -y librsvg2-dev python-cairosvg; \
     git clone https://github.com/wikimedia/mathoid/ /usr/lib/mathoid && \
-    cd /usr/lib/mathoid &&  npm install
+    cd /usr/lib/mathoid && npm install; \
+    mkdir -p /var/log/mathoid/
 COPY config/mathoid/config.yaml /usr/lib/mathoid/config.yaml
 
 # math extension
