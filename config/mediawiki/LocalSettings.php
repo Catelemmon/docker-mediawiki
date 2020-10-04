@@ -90,7 +90,7 @@ if (getenv('MEDIAWIKI_MAX_UPLOAD_SIZE') != '') {
                 break;
             case 'B':
             default:
-                $maxUploadSizeFactor = 0;
+                $maxUploadSizeFactor = 1;
                 break;
         }
         $wgMaxUploadSize = $maxUploadSizeValue * $maxUploadSizeFactor;
@@ -98,11 +98,17 @@ if (getenv('MEDIAWIKI_MAX_UPLOAD_SIZE') != '') {
     }
 }
 
+$wgMaxUploadSize = 2147483648;
+
 if (getenv('MEDIAWIKI_FILE_EXTENSIONS') != '') {
     foreach (explode(',', getenv('MEDIAWIKI_FILE_EXTENSIONS')) as $extension) {
-        $wgFileExtensions[] = trim($extension);
+        $externalExts[] = trim($extension);
     }
+} else{
+    $externalExts = [];
 }
+$wgFileExtensions = array( 'png', 'gif', 'jpg', 'jpeg' );
+$wgFileExtensions = array_merge($wgFileExtensions, ["xlsx", "xls", "doc", "docx", "mp4", "mkv", "avi","pdf"], $externalExts);
 
 $wgUseImageMagick = true;
 $wgImageMagickConvertCommand = "/usr/bin/convert";
@@ -209,6 +215,7 @@ $wgMathoidCli = ['/usr/lib/mathoid/cli.js', '-c', '/usr/lib/mathoid/config.yaml'
 $wgMathMathMLUrl = 'http://localhost:10044/';
 $wgMaxShellMemory = 1228800;
 
+wfLoadExtension( 'Widgets' );
 
 # Load extra settings
 require 'ExtraLocalSettings.php';

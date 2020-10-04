@@ -9,7 +9,7 @@ RUN set -eux; \
     \
     apt-get update; \ 
     apt-get install -y --no-install-recommends \
-    git curl librsvg2-bin imagemagick python3 apt-transport-https ca-certificates \
+    git curl librsvg2-bin imagemagick python3 apt-transport-https ca-certificates unzip \
     libicu-dev g++; \
     rm -r /var/lib/apt/lists/*
 
@@ -59,10 +59,15 @@ COPY config/nginx/* /etc/nginx/
 # PHP-FPM
 COPY config/php-fpm/php-fpm.conf /usr/local/etc/ 
 COPY config/php-fpm/php.ini /usr/local/etc/php/
+<<<<<<< Updated upstream
 RUN mkdir -p /var/run/php7-fpm/ && \
     mkdir -p /var/log/php-fpm/ && \
     chown www-data:www-data /var/run/php7-fpm/ && \
     chown www-data:www-data /var/log/php-fpm/
+=======
+RUN mkdir -p /var/run/php7-fpm/ && mkdir -p /var/log/php-fpm && \
+    chown www-data:www-data /var/run/php7-fpm/
+>>>>>>> Stashed changes
 
 # Supervisor
 RUN apt-get update && \
@@ -131,14 +136,29 @@ RUN curl -s -o /tmp/Modern.tar.gz https://extdist.wmflabs.org/dist/skins/Modern-
 RUN useradd --home=/var/lib/mathoid -M --user-group --system --shell=/usr/sbin/nologin -c "Mathoid for MediaWiki" mathoid; \
     apt update && apt install -y librsvg2-dev python-cairosvg; \
     git clone https://github.com/wikimedia/mathoid/ /usr/lib/mathoid && \
+<<<<<<< Updated upstream
     cd /usr/lib/mathoid && npm install; \
     mkdir -p /var/log/mathoid/
+=======
+    cd /usr/lib/mathoid &&  npm install; \
+    mkdir -p /var/log/mathoid && chown -R mathoid:mathoid /var/log/mathoid
+>>>>>>> Stashed changes
 COPY config/mathoid/config.yaml /usr/lib/mathoid/config.yaml
 
 # math extension
 RUN curl -s -o /tmp/Math.tar.gz https://extdist.wmflabs.org/dist/extensions/Math-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/extensions/ | grep -o -P "(?<=Math-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head -1`.tar.gz && \
     tar -xzf /tmp/Math.tar.gz -C /var/www/mediawiki/extensions && \
     rm /tmp/Math.tar.gz
+
+# video play
+RUN git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Widgets.git /var/www/mediawiki/extensions/Widgets/; \
+    apt install -y ffmpeg; \
+    cd /var/www/mediawiki/extensions/Widgets/ && git submodule init && git submodule update; \
+    cd /tmp/ && php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');" && \
+    php composer-setup.php && mv composer.phar /usr/local/bin/composer; \
+    cd /var/www/mediawiki/extensions/Widgets/ && composer update --no-dev; \
+    curl -s -o /var/www/mediawiki/resources/src/html5media.min.js https://api.html5media.info/1.2.2/html5media.min.js
+COPY script/compiled_templates/* /var/www/mediawiki/extensions/Widgets/compiled_templates/
 
 # Set work dir
 WORKDIR /var/www/mediawiki
