@@ -33,7 +33,7 @@ services:
     depends_on:
       - mediawiki_mariadb
     volumes:
-      - ./mediawiki_images:/images
+      - ./mediawiki_uploads:/images
       - ./testdata/logo.png:/var/www/mediawiki/resources/assets/wiki.png
   #    - ./testdata/ExtraLocalSettings.php:/var/www/mediawiki/ExtraLocalSettings.php
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
