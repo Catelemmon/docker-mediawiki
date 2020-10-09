@@ -1,0 +1,55 @@
+# To use this image with docker-compose please look at the examples in example/docker-compose.
+# This file is used for development together with .env which you can create by copying .env.default.
+version: '3'
+services:
+  mediawiki_wiki:
+    image: mediawiki-wiki:v1.9
+    container_name: mediawiki_wiki
+    environment:
+      MEDIAWIKI_SITENAME: MyWiki
+      MEDIAWIKI_META_NAMESPACE: MyWiki
+      MEDIAWIKI_SERVER: http://localhost:8080
+      MEDIAWIKI_EMERGENCY_CONTACT: ${EMERGENCY_CONTACT}
+      MEDIAWIKI_PASSWORD_SENDER: ${PASSWORD_SENDER}
+      MEDIAWIKI_DB_NAME: ${DB_NAME}
+      MEDIAWIKI_DB_USER: ${DB_USER}
+      MEDIAWIKI_DB_PASSWORD: ${DB_PASSWORD}
+      MEDIAWIKI_LANGUAGE_CODE: zh-cn
+      MEDIAWIKI_SECRET_KEY: ${SECRET_KEY}
+      MEDIAWIKI_DB_PREFIX: ""
+      MEDIAWIKI_UPGRADE_KEY: ${UPGRADE_KEY}
+      MEDIAWIKI_DB_HOST: 192.168.6.156
+      MEDIAWIKI_DEFAULT_SKIN: Vector
+      MEDIAWIKI_MAX_UPLOAD_SIZE: 2G
+      MEDIAWIKI_FILE_EXTENSIONS: png,gif,jpg,jpeg,webp,pdf,mp4,mkv,flv
+      MEDIAWIKI_DEBUG: 1
+      PHPFPM_WORKERS_START: 10
+      PHPFPM_WORKERS_MIN: 1
+      PHPFPM_WORKERS_MAX: 20
+      PARSOID_WORKERS: 10
+    ports:
+      - 8080:8080
+      - 9001:9001
+    volumes:
+      - ./mediawiki_uploads:/images
+      - ./testdata/logo.png:/var/www/mediawiki/resources/assets/wiki.png
+      #    - ./testdata/ExtraLocalSettings.php:/var/www/mediawiki/ExtraLocalSettings.php
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      #    - ./config/mediawiki/LocalSettings.php:/var/www/mediawiki/LocalSettings.php
+      - ./config/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./config/mathoid/config.yaml:/usr/lib/mathoid/config.yaml
+    network_mode: "host"
+  mediawiki_mariadb:
+    image: mariadb:latest
+    container_name: mediawiki_mariadb
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    volumes:
+      - ./mediawiki_mysql1:/var/lib/mysql
+    network_mode: "host"
+volumes:
+  mediawiki_images:
+  mediawiki_mysql:
