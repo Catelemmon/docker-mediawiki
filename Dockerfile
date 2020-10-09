@@ -146,7 +146,7 @@ RUN git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Widgets.git /v
     php composer-setup.php && mv composer.phar /usr/local/bin/composer; \
     cd /var/www/mediawiki/extensions/Widgets/ && composer update --no-dev; \
     curl -s -o /var/www/mediawiki/resources/src/html5media.min.js https://api.html5media.info/1.2.2/html5media.min.js
-COPY script/compiled_templates/* /var/www/mediawiki/extensions/Widgets/compiled_templates/
+
 
 # Set work dir
 WORKDIR /var/www/mediawiki
