@@ -215,7 +215,22 @@ $wgMathoidCli = ['/usr/lib/mathoid/cli.js', '-c', '/usr/lib/mathoid/config.yaml'
 $wgMathMathMLUrl = 'http://localhost:10044/';
 $wgMaxShellMemory = 1228800;
 
-wfLoadExtension( 'Widgets' );
+# Widghts
+wfLoadExtension('Widgets');
+
+# ContributionScores
+require_once("/var/www/mediawiki/extensions/ContributionScores/ContributionScores.php");
+    $wgContribScoreIgnoreBots = true;          // Exclude Bots from the reporting - Can be omitted.
+    $wgContribScoreIgnoreBlockedUsers = true;  // Exclude Blocked Users from the reporting - Can be omitted.
+    $wgContribScoresUseRealName = true;        // Use real user names when available - Can be omitted. Only for MediaWiki 1.19 and later.
+    $wgContribScoreDisableCache = false;       // Set to true to disable cache for parser function and inclusion of table.
+    $wgContribScoreReports = array(
+                          array(7,50),
+                          array(30,50),
+                          array(0,50),
+                          array(90,50),
+                          array(365,50));
+
 
 # Load extra settings
 require 'ExtraLocalSettings.php';

@@ -148,6 +148,10 @@ RUN git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Widgets.git /v
     curl -s -o /var/www/mediawiki/resources/src/html5media.min.js https://api.html5media.info/1.2.2/html5media.min.js; \
     chmod 777 -R /var/www/mediawiki/extensions/Widgets/
 
+RUN curl -s -o /tmp/ContributionScores.tar.gz https://extdist.wmflabs.org/dist/extensions/ContributionScores-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/extensions/ | grep -o -P "(?<=ContributionScores-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head -1`.tar.gz && \
+    tar -xzf /tmp/ContributionScores.tar.gz -C /var/www/mediawiki/extensions && \
+    rm /tmp/ContributionScores.tar.gz
+
 # Set work dir
 WORKDIR /var/www/mediawiki
 
