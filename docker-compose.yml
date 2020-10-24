@@ -3,7 +3,7 @@
 version: '3'
 services:
   mediawiki_wiki:
-    image: mediawiki_wiki:v1.91
+    image: mediawiki_wiki:v1.92
     container_name: mediawiki_wiki
     environment:
       MEDIAWIKI_SITENAME: MyWiki

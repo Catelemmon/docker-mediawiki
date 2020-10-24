@@ -232,5 +232,10 @@ require_once("/var/www/mediawiki/extensions/ContributionScores/ContributionScore
                           array(365,50));
 
 
+wfLoadExtension('PDFEmbed');
+$wgPdfEmbed['width'] = 800;
+$wgPdfEmbed['height'] = 1090;
+$wgGroupPermissions['*']['embed_pdf'] = true;
+
 # Load extra settings
 require 'ExtraLocalSettings.php';
