@@ -1,0 +1,303 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>开发者安装 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="SimpleUser.html" />
+    
+    
+    <link rel="prev" href="./" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2" data-path="DeveloperInstaller.html">
+            
+                <a href="DeveloperInstaller.html">
+            
+                    
+                    开发者安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="SimpleUser.html">
+            
+                <a href="SimpleUser.html">
+            
+                    
+                    简单使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >开发者安装</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x5F00;&#x53D1;&#x8005;&#x5B89;&#x88C5;&#x6587;&#x6863;">&#x5F00;&#x53D1;&#x8005;&#x5B89;&#x88C5;&#x6587;&#x6863;</h1>
+<p>PS: &#x76EE;&#x524D;&#x7528;&#x6237;&#x4E00;&#x952E;&#x5B89;&#x88C5;&#x811A;&#x672C;&#x6B63;&#x5728;&#x9002;&#x914D;&#xFF0C;&#x540E;&#x7EED;&#x4F1A;&#x6709;&#x76F8;&#x5173;&#x6587;&#x6863;&#x548C;&#x6559;&#x7A0B;</p>
+<h2 id="&#x6B63;&#x5F0F;&#x5B89;&#x88C5;&#x6B65;&#x9AA4;">&#x6B63;&#x5F0F;&#x5B89;&#x88C5;&#x6B65;&#x9AA4;</h2>
+<p>PS: &#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x5747;&#x53EF;&#x53BB;&#x6389;sudo,&#x5728;root&#x7528;&#x6237;&#x4E0B;&#x6267;&#x884C;</p>
+<h3 id="&#x5B89;&#x88C5;docker&#x53CA;&#x5176;&#x9644;&#x5C5E;&#x8F6F;&#x4EF6;">&#x5B89;&#x88C5;docker&#x53CA;&#x5176;&#x9644;&#x5C5E;&#x8F6F;&#x4EF6;</h3>
+<p>&#x5B89;&#x88C5;docker</p>
+<pre><code class="lang-bash">sudo dpkg -i containerd.io_1.3.7-1_amd64.deb
+sudo dpkg -i docker-ce-cli_19.03.9_3-0_ubuntu-bionic_amd64.deb
+sudo dpkg -i docker-ce_19.03.9_3-0_ubuntu-bionic_amd64.deb
+</code></pre>
+<p>&#x914D;&#x7F6E;&#x6307;&#x5B9A;&#x7528;&#x6237;&#x5230;docker&#x7528;&#x6237;&#x7EC4;&#xFF08;&#x4E00;&#x76F4;&#x4F7F;&#x7528;root&#x7528;&#x6237;&#x64CD;&#x4F5C;&#x53EF;&#x5FFD;&#x7565;&#xFF09;&#xFF0C;&#x751F;&#x6548;&#x9700;&#x8981;&#x91CD;&#x542F;&#x7535;&#x8111;</p>
+<pre><code class="lang-bash">sudo usermod <span class="hljs-_">-a</span>G docker username
+</code></pre>
+<p>&#x5B89;&#x88C5;docker-compose</p>
+<p>PS: &#x5F53;docker-compose&#x62A5;&#x9519;&#x7684;&#x65F6;&#x5019;&#x53EF;&#x4EE5;&#x5220;&#x9664;docker-compose&#xFF0C;&#x6267;&#x884C;<code>rm -rf/usr/local/bin/docker-compose</code>&#xFF0C;&#x5E76;&#x6309;&#x4E0B;&#x5217;&#x6B65;&#x9AA4;&#x91CD;&#x88C5;</p>
+<pre><code>cp docker-compose-Linux-x86_64 /usr/local/bin/docker-compose
+sudo chmod 755 /usr/local/bin/docker-compose
+docker-compose --version # &#x76D1;&#x6D4B;docker-compose &#x662F;&#x5426;&#x5B89;&#x88C5;&#x6210;&#x529F;
+</code></pre><h3 id="&#x6B63;&#x5F0F;&#x8FDB;&#x5165;&#x5B89;&#x88C5;mediawiki&#x73AF;&#x8282;">&#x6B63;&#x5F0F;&#x8FDB;&#x5165;&#x5B89;&#x88C5;mediawiki&#x73AF;&#x8282;</h3>
+<p>&#x9996;&#x5148;&#x8FDB;&#x5165;statics&#x76EE;&#x5F55;&#x52A0;&#x8F7D;mediawiki_wiki&#x6240;&#x9700;&#x8981;&#x7684;&#x955C;&#x50CF;</p>
+<pre><code class="lang-bash">gunzip -c mediawiki_pack.tar.gz | docker load
+</code></pre>
+<p>&#x65B0;&#x5EFA;.env&#x6587;&#x4EF6;</p>
+<pre><code class="lang-bash">cp .env.default .env
+</code></pre>
+<p>&#x586B;&#x5165;&#x90AE;&#x7BB1;&#x540D;&#x79F0;(&#x5982;&#x4E0B;)</p>
+<pre><code>EMERGENCY_CONTACT=1713856662a@gmail.com
+PASSWORD_SENDER=1713856662a@gmail.com
+</code></pre><p>&#x586B;&#x5165;&#x9700;&#x8981;&#x521B;&#x5EFA;&#x7684;&#x6570;&#x636E;&#x5E93;&#x540D;&#x79F0;&#xFF0C;&#x7528;&#x6237;&#x548C;&#x5BC6;&#x7801;</p>
+<pre><code>DB_NAME=mediawiki_db
+DB_USER=cicada
+DB_PASSWORD=123456
+</code></pre><p>&#x7B2C;&#x4E00;&#x6B21;&#x62C9;&#x8D77;&#x955C;&#x50CF;</p>
+<pre><code class="lang-bash">docker-compose <span class="hljs-_">-f</span> docker-compose.yml up
+</code></pre>
+<p>&#x65B0;&#x5F00;&#x4E00;&#x4E2A;&#x7EC8;&#x7AEF;</p>
+<pre><code class="lang-bash">docker <span class="hljs-built_in">exec</span> -it mediawiki-wiki /script/install.sh {username} {password}
+</code></pre>
+<p>username&#x548C;password&#x9700;&#x8981;&#x81EA;&#x5DF1;&#x5B9A;&#x4E49;&#xFF0C;&#x8FD9;&#x662F;wiki&#x7BA1;&#x7406;&#x5458;&#x7684;&#x540D;&#x5B57;&#x548C;&#x5BC6;&#x7801;
+&#x4EE3;&#x7801;&#x6267;&#x884C;&#x540E;&#x4F1A;&#x6709;&#x5982;&#x4E0B;&#x4E24;&#x4E2A;&#x5B57;&#x6BB5;&#xFF0C;&#x9700;&#x8981;&#x5C06;&#x5176;&#x62F7;&#x8D1D;&#x4E0B;&#x6765;&#xFF0C;&#x8D34;&#x5165;.env&#x6587;&#x4EF6;&#x5BF9;&#x5E94;&#x7684;&#x5B57;&#x6BB5;&#x4E2D;&#xFF0C;&#x5982;&#x4E0B;</p>
+<pre><code>SECRET_KEY=bc4d089fb344c3457a464876768c2ebd09e95721dae7d42f9ba912953f834365
+UPGRADE_KEY=6828be7e1b2fdc6e
+</code></pre><p>&#x56DE;&#x5230;&#x521A;&#x624D;&#x542F;&#x52A8;&#x955C;&#x50CF;&#x7684;&#x7A97;&#x53E3;&#xFF0C;ctrl-C &#x505C;&#x6B62;&#x955C;&#x50CF;&#x8FD0;&#x884C;</p>
+<pre><code>docker exec -it mediawiki-wiki /script/update.sh # &#x66F4;&#x65B0;mediawiki&#x63D2;&#x4EF6;
+docker-compose -f docker-compose.yaml up -d
+</code></pre><p>&#x8FDB;&#x5165;&#x7CFB;&#x7EDF;
+wiki url&#x5730;&#x5740;&#x4E3A;127.0.0.1:8080
+&#x767B;&#x5F55;&#x65F6;&#x4F7F;&#x7528;&#x521A;&#x521A;&#x8BBE;&#x5B9A;&#x7684;&#x7BA1;&#x7406;&#x5458;&#x7528;&#x6237;&#x548C;&#x5BC6;&#x7801;&#xFF0C;&#x6CE8;&#x610F;&#x4E0D;&#x662F;&#x6570;&#x636E;&#x5E93;&#x7684;&#x5BC6;&#x7801;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: 简介">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="SimpleUser.html" class="navigation navigation-next " aria-label="Next page: 简单使用">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"开发者安装","level":"1.2","depth":1,"next":{"title":"简单使用","level":"1.3","depth":1,"path":"SimpleUser.md","ref":"SimpleUser.md","articles":[]},"previous":{"title":"简介","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"DeveloperInstaller.md","mtime":"2020-10-25T07:47:58.743Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-10-25T10:31:51.647Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

@@ -1,5 +1,8 @@
-testdata/
+share_data/
 docker-compose.yml
 README.md
-.env
-mediawiki_mysql/
+.env*
+mediawiki_db/
+mediawiki_uploads/
+doc/
+statics/
