@@ -1,7 +1,7 @@
 .idea
 .env
-/mediawiki_mysql
-/mediawiki_uploads
-/mediawiki_db
+mediawiki_mysql/
+mediawiki_uploads/
+mediawiki_db/
 *.tar
 *.gz
