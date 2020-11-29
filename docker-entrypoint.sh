@@ -25,5 +25,8 @@ if [ ${MEDIAWIKI_SMTP_SSL_VERIFY_PEER} == 0 ]; then
     sed -i "s/if (isset(\$params\['socket_options'\])) \$this->socket_options = \$params\['socket_options'\];/if (isset(\$params['socket_options'])) \$this->socket_options = \$params['socket_options'];\\n\$this->socket_options['ssl']['verify_peer'] = false;\\n\$this->socket_options['ssl']['verify_peer_name'] = false;/g" /usr/local/lib/php/Mail/smtp.php
 fi
 
+# cron job to set up scheduled statistics generation
+echo "@hourly php /var/www/mediawiki/extensions/FlaggedRevs/maintenance/updateStats.php" | crontab -u www-data -
+
 # Start supervisord
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf

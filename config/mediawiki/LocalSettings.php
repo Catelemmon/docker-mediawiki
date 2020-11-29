@@ -206,8 +206,12 @@ $wgGroupPermissions['bureaucrat']['usermerge'] = true;
 $wgGroupPermissions['sysop']['usermerge'] = true;
 $wgUserMergeProtectedGroups = array();
 
+# pending changes 审核功能 仅开放已经审阅的内容给用户
+$wgFlaggedRevsStatsAge = false;
+require_once("/var/www/mediawiki/extensions/FlaggedRevs/FlaggedRevs.php");
+
 # math extension
-wfLoadExtension( 'Math' );
+wfLoadExtension('Math');
 $wgDebugLogGroups['Math'] = [ 'level' => 'info', 'destination' => '/var/www/html/mediawiki/log/math.log' ];
 $wgMathValidModes[] = 'mathml';
 $wgDefaultUserOptions['math'] = 'mathml';
@@ -220,16 +224,16 @@ wfLoadExtension('Widgets');
 
 # ContributionScores
 require_once("/var/www/mediawiki/extensions/ContributionScores/ContributionScores.php");
-    $wgContribScoreIgnoreBots = true;          // Exclude Bots from the reporting - Can be omitted.
-    $wgContribScoreIgnoreBlockedUsers = true;  // Exclude Blocked Users from the reporting - Can be omitted.
-    $wgContribScoresUseRealName = true;        // Use real user names when available - Can be omitted. Only for MediaWiki 1.19 and later.
-    $wgContribScoreDisableCache = false;       // Set to true to disable cache for parser function and inclusion of table.
-    $wgContribScoreReports = array(
-                          array(7,50),
-                          array(30,50),
-                          array(0,50),
-                          array(90,50),
-                          array(365,50));
+$wgContribScoreIgnoreBots = true;          // Exclude Bots from the reporting - Can be omitted.
+$wgContribScoreIgnoreBlockedUsers = true;  // Exclude Blocked Users from the reporting - Can be omitted.
+$wgContribScoresUseRealName = true;        // Use real user names when available - Can be omitted. Only for MediaWiki 1.19 and later.
+$wgContribScoreDisableCache = false;       // Set to true to disable cache for parser function and inclusion of table.
+$wgContribScoreReports = array(
+                      array(7,50),
+                      array(30,50),
+                      array(0,50),
+                      array(90,50),
+                      array(365,50));
 
 
 wfLoadExtension('PDFEmbed');

@@ -149,15 +149,22 @@ RUN git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Widgets.git /v
     chmod 777 -R /var/www/mediawiki/extensions/Widgets/
 
 # contribution score
-RUN curl -s -o /tmp/ContributionScores.tar.gz https://extdist.wmflabs.org/dist/extensions/ContributionScores-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/extensions/ | grep -o -P "(?<=ContributionScores-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head -1`.tar.gz && \
-    tar -xzf /tmp/ContributionScores.tar.gz -C /var/www/mediawiki/extensions && \
-    rm /tmp/ContributionScores.tar.gz
+RUN git clone "https://gerrit.wikimedia.org/r/mediawiki/extensions/ContributionScores" /var/www/mediawiki/extensions/ContributionScores
 
 # pdf embed
 # https://gitlab.com/hydrawiki/extensions/PDFEmbed/-/archive/2.0.2/PDFEmbed-2.0.2.zip
 RUN curl -s -o /tmp/PDFEmbed.zip https://gitlab.com/hydrawiki/extensions/PDFEmbed/-/archive/2.0.2/PDFEmbed-2.0.2.zip; \
     unzip /tmp/PDFEmbed.zip -d /var/www/mediawiki/extensions && mv /var/www/mediawiki/extensions/PDFEmbed-2.0.2 /var/www/mediawiki/extensions/PDFEmbed; \
     rm /tmp/PDFEmbed.zip
+
+# FlaggedRevs 内容审查
+RUN apt install cron; \
+    curl -s -o /tmp/FlaggedRevs.tar.gz https://extdist.wmflabs.org/dist/extensions/FlaggedRevs-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/extensions/ | grep -o -P "(?<=FlaggedRevs-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head -1`.tar.gz; \
+    tar -xzf /tmp/FlaggedRevs.tar.gz -C /var/www/mediawiki/extensions; \
+    php maintenance/populateImageSha1.php && echo "@hourly php /var/www/mediawiki/extensions/FlaggedRevs/maintenance/updateStats.php" | crontab -u www-data -; \
+    php maintenance/update.php; \
+    rm /tmp/FlaggedRevs.tar.gz
+
 
 # Set work dir
 WORKDIR /var/www/mediawiki
