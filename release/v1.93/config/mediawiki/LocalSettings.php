@@ -135,8 +135,8 @@ $wgDiff3 = "/usr/bin/diff3";
 
 
 $wgGroupPermissions['*']['createaccount'] = false;
-$wgGroupPermissions['*']['edit'] = true;
-$wgGroupPermissions['*']['read'] = true;
+$wgGroupPermissions['*']['edit'] = false;
+$wgGroupPermissions['*']['read'] = false;
 
 $wgDefaultSkin = "vector";
 if (getenv('MEDIAWIKI_DEFAULT_SKIN') != '') {

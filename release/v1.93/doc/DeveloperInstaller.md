@@ -8,6 +8,13 @@ PS: 以下命令均可去掉sudo,在root用户下执行
 
 ### 安装docker及其附属软件
 
+进入static文件夹，解压docker 套件包
+```
+cd statics
+tar -xzvf docker-tool-pkg.tar.gz
+cd ubuntu-docker-pkgs
+```
+
 安装docker
 
 ```bash
@@ -19,7 +26,7 @@ sudo dpkg -i docker-ce_19.03.9_3-0_ubuntu-bionic_amd64.deb
 配置指定用户到docker用户组（一直使用root用户操作可忽略），生效需要重启电脑
 
 ```bash
-sudo usermod -aG docker username 
+sudo usermod -aG docker $USER 
 ```
 
 安装docker-compose
